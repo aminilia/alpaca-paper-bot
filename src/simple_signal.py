@@ -67,12 +67,19 @@ def generate_signal(symbol: str) -> str:
     if pd.isna(ma20) or pd.isna(ma50):
         return "HOLD: not enough data"
 
-    if ma20 > ma50:
-        return "BULLISH: MA20 is above MA50"
-    if ma20 < ma50:
-        return "BEARISH: MA20 is below MA50"
+    if close > ma20 > ma50:
+        return "STRONG BULLISH: close > MA20 > MA50"
 
-    return "HOLD: moving averages are equal"
+    if ma20 > ma50 and close < ma20:
+        return "WEAK BULLISH: MA20 > MA50, but price is below MA20"
+
+    if close < ma20 < ma50:
+        return "BEARISH: close < MA20 < MA50"
+
+    if close < ma50:
+        return "WEAK BEARISH: price is below MA50"
+
+    return "HOLD: unclear trend"
 
 
 def main() -> None:
