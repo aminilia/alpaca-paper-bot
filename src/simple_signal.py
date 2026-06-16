@@ -82,15 +82,26 @@ def generate_signal(symbol: str) -> str:
     return "HOLD: unclear trend"
 
 
-def main() -> None:
-    symbol = "SPY"
-    try:
-        signal = generate_signal(symbol)
-    except RuntimeError as exc:
-        print(f"Error: {exc}")
-        return
+def get_symbols_from_env() -> list[str]:
+    raw_symbols = os.getenv("SYMBOLS", "SPY")
+    return [symbol.strip().upper() for symbol in raw_symbols.split(",") if symbol.strip()]
 
-    print(f"Signal: {signal}")
+
+def main() -> None:
+    symbols = get_symbols_from_env()
+
+    for symbol in symbols:
+        print("-" * 50)
+
+        try:
+            signal = generate_signal(symbol)
+        except RuntimeError as exc:
+            print(f"Error for {symbol}: {exc}")
+            continue
+
+        print(f"Signal: {signal}")
+
+    print("-" * 50)
     print("Informational only. No orders were submitted.")
 
 

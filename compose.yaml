@@ -1,0 +1,50 @@
+﻿services:
+  alpaca-check:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: python src/check_alpaca.py
+
+  signal-spy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: python src/simple_signal.py
+
+  paper-trade-spy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: python src/paper_trade_spy.py
+
+  strategy-ma:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: python src/strategy_ma.py
+  
+  backtest-strategy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    command: python src/backtest_strategy.py
+    
+  history-check:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: python src/history_check.py
